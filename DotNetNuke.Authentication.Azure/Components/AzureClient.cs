@@ -31,6 +31,7 @@ using System.Web.Script.Serialization;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Authentication.OAuth;
+using DotNetNuke.Services.Log.EventLog;
 
 #endregion
 
@@ -65,6 +66,9 @@ namespace DotNetNuke.Authentication.Azure.Components
         #endregion
         protected override TimeSpan GetExpiry(string responseText)
         {
+            if (string.IsNullOrEmpty(responseText))
+                return new TimeSpan();
+
             var jsonSerializer = new JavaScriptSerializer();
             var tokenDictionary = jsonSerializer.DeserializeObject(responseText) as Dictionary<string, object>;
 
@@ -75,7 +79,9 @@ namespace DotNetNuke.Authentication.Azure.Components
         {
             if (string.IsNullOrEmpty(responseText))
             {
-                throw new Exception("There was an error processing the credentials. Contact your system administrator.");
+                EventLogController.Instance.AddLog("Azure Authentication", "The user doesn't have permissions to this directory", EventLogController.EventLogType.HOST_ALERT);
+                return string.Empty;
+                //throw new Exception("There was an error processing the credentials. Contact your system administrator.");
             }
             var jsonSerializer = new JavaScriptSerializer();
             var tokenDictionary = jsonSerializer.DeserializeObject(responseText) as Dictionary<string, object>;

@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AuthorisationResultDenied.Text" xml:space="preserve">
+    <value>Sorry, the user doesn't have permissions to this directory</value>
+  </data>
   <data name="LoginAzure.Text" xml:space="preserve">
     <value>Sign in with Azure</value>
   </data>

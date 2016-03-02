@@ -75,11 +75,17 @@ namespace DotNetNuke.Authentication.Azure
 
         private void loginButton_Click(object sender, EventArgs e)
         {
-            AuthorisationResult result = OAuthClient.Authorize();
-            if (result == AuthorisationResult.Denied)
+            try
             {
-                UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("PrivateConfirmationMessage", Localization.SharedResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
-                
+                AuthorisationResult result = OAuthClient.Authorize();
+                if (result == AuthorisationResult.Denied)
+                {
+                    UI.Skins.Skin.AddModuleMessage(this, this.LocalizeString("AuthorisationResultDenied.Text").ToString(), ModuleMessage.ModuleMessageType.YellowWarning);
+                }
+            }
+            catch (Exception)
+            {
+                UI.Skins.Skin.AddModuleMessage(this, this.LocalizeString("AuthorisationResultDenied.Text").ToString(), ModuleMessage.ModuleMessageType.YellowWarning);
             }
         }
     }
